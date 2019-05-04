@@ -1,7 +1,7 @@
 # http_normalizer
-###### http url normalizer for crawlers
+###### http url normalization utilities for web crawlers
 
-This library is intented to produce normalized http url and not uri, for example http url dosn't have an userinfo part (https://tools.ietf.org/html/rfc7230).
+This library is intented to produce normalized http url and not uri, for example http url dosn't have an userinfo part (<a href="https://tools.ietf.org/html/rfc7230" target="_blank">rfc7230</a>).
 
 #### structure of http urls
 
@@ -10,12 +10,7 @@ http-URI = "http:" "//" authority path-abempty [ "?" query ] [ "#" fragment ]
 ```
 
 #### http_parts
-No regex are used here, these function are intended to be used from a web-crawler, so they want reduce the size of string
-and be as conservative as possible, if you use a parser to extract the arguments for these function be careful because parser
-could be more restrictive. The advantage of having single functions that perform the normalization of the individual parts 
-is the possibility of defining further parsing rules, for example if you want to decode the percent-encoded ports you can 
-try this decoding of the sequence of characters involved before calling normalize_port () and therefore increase the general
-error tolerance.
+No regex are used here, these function are intended to be used from a web  crawler, so they want reduce the size of resulting string and be conservative as possible, if you use a parser to extract the arguments for these function be careful because parser could be more restrictive. The advantage of having single functions that perform the normalization of the individual parts is the possibility of defining further parsing rules, for example if you want to decode the percent-encoded ports you can try this decoding of the sequence of characters involved before calling normalize_port() and therefore increase the general error tolerance.
 
 ###### normalize_protocol()
 * Decoding percent-encoded octets of unreserved characters
@@ -58,5 +53,7 @@ This function always perform a normalization (no errors).
 * Sorted query parameters by key (ex. `q=10&q=20&a=1` become `a=1&q=20`)
 
 This function always perform a normalization (no errors).
+
+*for examples of possible usages see [examples](examples).*
 
 ###### Copyright © 2019, [Manu-sh](https://github.com/Manu-sh), s3gmentationfault@gmail.com. Released under the [MIT license](LICENSE).
