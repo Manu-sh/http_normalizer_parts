@@ -15,6 +15,9 @@ class http_url {
 
 	public:
 		explicit http_url(const std::string &u);
+		http_url(const http_url &) = delete;
+		http_url & operator=(const http_url &) = delete;
+
 		bool has_proto()    const { return has(m_proto);    }
 		bool has_hostname() const { return has(m_hostname); }
 		bool has_path()     const { return has(m_path);     }
