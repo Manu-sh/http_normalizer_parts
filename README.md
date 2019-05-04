@@ -19,7 +19,8 @@ no regex are used here
 
 ###### normalize_hostname()
 * Decoding percent-encoded octets of unreserved characters
-* Max 64 chars for this part
+* Empty labels are not allowed
+* Max 64 chars are allowed
 * Require at least 2 labels (so host like localhost are rejected)
 * The maximum label are 20
 * each labels must start and end with `[[:alnum:]]` `'-'` is allowed in the middle
