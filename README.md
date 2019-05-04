@@ -43,19 +43,19 @@ or the port itself if is valid and isn't the default port
 
 ###### normalize_path()
 * Decoding percent-encoded octets of unreserved characters
-* Encoding reserved characters (ex. `'\0'` become `%00`)
-* Removing dot-segments (ex. `/../lol/` become `lol`)
-* Removing double slashes (ex. `//lol/lol///` become `lol/lol`)
-* Removing default directory index (ex. `/a/index.html`  become `a`)
+* Encoding reserved characters (ex. `'\0'` &rarr; `%00`)
+* Removing dot-segments (ex. `/../lol/` &rarr; `lol`)
+* Removing double slashes (ex. `//lol/lol///` &rarr; `lol/lol`)
+* Removing default directory index (ex. `/a/index.html`  &rarr; `a`)
 
 This function always perform a normalization (no errors).
 
 ###### normalize_query()
 * Decoding percent-encoded octets of unreserved characters
-* Drop `'='` in Query Parameter if Empty (ex. `q=&x` become `q&x`)
+* Drop `'='` in Query Parameter if Empty (ex. `q=&x` &rarr; `q&x`)
 * Encoding reserved characters
-* Space becomes plus sign In query (ex. `q=%20` become `q=+`)
-* Sorted query parameters by key (ex. `q=10&q=20&a=1` become `a=1&q=20`)
+* Space becomes plus sign In query (ex. `q=%20` &rarr; `q=+`)
+* Sorted query parameters by key (ex. `q=10&q=20&a=1` &rarr; `a=1&q=20`)
 
 This function always perform a normalization (no errors).
 
