@@ -9,8 +9,14 @@
 #include <iterator>
 #include <type_traits>
 
-#include <iostream>
-using std::cout, std::endl;
+#ifdef DEBUG
+	#include <iostream>
+	#include <cassert>
+	using std::cout, std::endl;
+	// #warning "DEBUG MODE ON "
+#else
+	// #warning "DEBUG MODE OFF "
+#endif
 
 namespace http_parts::utils {
 

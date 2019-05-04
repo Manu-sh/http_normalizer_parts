@@ -23,8 +23,10 @@ target_compile_options(${PROJECT_NAME}
 
 # CMAKE_CXX_FLAGS_RELEASE == Release ? "-O3 .." : ""
 target_compile_options(${PROJECT_NAME} PRIVATE $<$<CONFIG:Release>:-O3 -ffast-math -funroll-loops -march=native>)
-target_compile_options(${PROJECT_NAME} PRIVATE $<$<CONFIG:Debug>:-O0 -g>)
+target_compile_options(${PROJECT_NAME} PRIVATE $<$<CONFIG:Debug>:-O0 -g -DDEBUG>)
 
-# tests
-enable_testing()
-add_subdirectory(tests)
+include(CTest)
+if(BUILD_TESTING)
+	message("Config build type: ${CMAKE_BUILD_TYPE}")
+	add_subdirectory(tests)
+endif()

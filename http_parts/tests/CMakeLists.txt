@@ -9,6 +9,7 @@ set(TEST_BIN ${PROJECT_NAME}_test)
 add_executable(${TEST_BIN} ${PROJECT_NAME}_test.cpp)
 
 target_link_libraries(${TEST_BIN} PRIVATE ${PROJECT_NAME})
+target_compile_definitions(${PROJECT_NAME} PRIVATE -DDEBUG)
 target_compile_options(${PROJECT_NAME}
 	PRIVATE
 		-Wall -Wextra -Wno-unused-function -pipe -pedantic
