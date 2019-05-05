@@ -44,7 +44,7 @@ or the port itself if is valid and isn't the default port
 * Capitalizing letters in escape sequences
 * Removing dot-segments (ex. `/../lol/` become `lol`)
 * Removing double slashes (ex. `//lol/lol///` become `lol/lol`)
-* Removing default directory index (`index.html`, `index.php`, `default.asp`, `index.shtml`, `index.jsp`), actually these values are hard-coded and case-sensitive (ex. `/a/index.html`  become `a`)
+* Removing default directory index (`index.html`, `index.php`, `default.asp`, `index.shtml`, `index.jsp`), actually these values are *hard-coded* and case-sensitive (ex. `/a/index.html`  become `a`)
 
 This function always perform a normalization (no errors).
 
