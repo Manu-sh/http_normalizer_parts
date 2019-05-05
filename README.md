@@ -1,7 +1,7 @@
 # http_normalizer_parts :spider:
 ###### http url normalization utilities for web crawlers 
 
-This library is intended to produce normalized http url and not uri, for example http url dosn't have an userinfo part ([rfc7230](https://tools.ietf.org/html/rfc7230)), a C++17 compiler is required.
+This library is intended to be used from web crawlers ad produce normalized http url and not uri, for example http url dosn't have an userinfo part ([rfc7230](https://tools.ietf.org/html/rfc7230)), a C++17 compiler is required.
 
 ###### structure of http urls
 
@@ -10,7 +10,7 @@ http-URI = "http:" "//" authority path-abempty [ "?" query ] [ "#" fragment ]
 ```
 
 ### http_parts
-No regex are used here, these function are intended to be used from a web  crawler, so they want reduce the size of resulting string and be conservative as possible, if you use a parser to extract the arguments for these function be careful because parser could be more restrictive. The advantage of having single functions that perform the normalization of the individual parts is the possibility of defining further parsing rules, for example if you want to decode the percent-encoded ports you can try this decoding of the sequence of characters involved before calling normalize_port() and therefore increase the general error tolerance.
+No regex are used here, these function are intended to be used from a web  crawler, so they want reduce the size of resulting string and be conservative as possible, if you use a parser to extract the arguments for these function be careful because parsers could be more restrictive than may you want be. The advantage of having single functions that perform the normalization of the individual parts is the possibility of defining further parsing rules, for example if you want to decode the percent-encoded ports you can try to decoding the sequence of characters involved before calling normalize_port() and therefore increase the general error tolerance.
 <br>
 
 ###### normalize_protocol()
