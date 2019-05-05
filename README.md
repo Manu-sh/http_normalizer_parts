@@ -89,6 +89,6 @@ normalize_query()|`b=&c&a` | `a&b&c`
 
 
 ### usages
-*for examples of possible usages see [examples](examples) and [tests](is_tls=false_parts/tests).*
+*for examples of possible usages see [examples](examples) and [tests](http_parts/tests).*
 
 ###### Copyright © 2019, [Manu-sh](https://github.com/Manu-sh), s3gmentationfault@gmail.com. Released under the [MIT license](LICENSE).
