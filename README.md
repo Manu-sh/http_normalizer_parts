@@ -10,7 +10,7 @@ http-URI = "http:" "//" authority path-abempty [ "?" query ] [ "#" fragment ]
 ```
 
 ### http_parts
-No regex are used here, these function are intended to be used from a web  crawler, so they want reduce the size of resulting string and be conservative as possible, if you use a parser to extract the arguments for these function be careful because parsers could be more restrictive than may you want be. The advantage of having single functions that perform the normalization of the individual parts is the possibility of defining further parsing rules, for example if you want to decode the percent-encoded ports you can try to decoding the sequence of characters involved before calling normalize_port() and therefore increase the general error tolerance.
+No regex are used here, these function are intended to be used from a web  crawler, so they want reduce the size of resulting string and be conservative as possible, if you use an existent parser to extract the arguments for these function be careful because parsers could be more restrictive than may you want be. The advantage of having single functions that perform the normalization of the individual parts is the possibility of defining further parsing rules, for example if you want to decode the percent-encoded ports you can try to decoding the sequence of characters involved before calling normalize_port() and therefore increase the general error tolerance.
 <br>
 
 ###### normalize_protocol()
@@ -44,7 +44,7 @@ or the port itself if is valid and isn't the default port
 * Capitalizing letters in escape sequences
 * Removing dot-segments (ex. `/../lol/` become `lol`)
 * Removing double slashes (ex. `//lol/lol///` become `lol/lol`)
-* Removing default directory index (ex. `/a/index.html`  become `a`)
+* Removing default directory index (`index.html`, `index.php`, `default.asp`, `index.shtml`, `index.jsp`), actually these values are hard-coded and case-sensitive (ex. `/a/index.html`  become `a`)
 
 This function always perform a normalization (no errors).
 
@@ -54,7 +54,7 @@ This function always perform a normalization (no errors).
 * Encoding reserved characters
 * Capitalizing letters in escape sequences
 * Space becomes plus sign In query (ex. `q=%20` become `q=+`)
-* Sorted query parameters by key (ex. `q=10&q=20&a=1` become `a=1&q=20`)
+* Sorted query parameters by key (ex. `q=10&q=20&a=1` become `a=1&q=20`), keys are unique, and the value associed with the key is determined by their original order, so `a=1&a=2&a=3` become `a=3`
 
 This function always perform a normalization (no errors).
 
@@ -81,6 +81,7 @@ normalize_path()| `x//y////z/` | `x/y/z`
 normalize_path()| `/%78//y////z/` | `x/y/z`
 normalize_path()| `../hex/Sa/./sa/.././index.html` | `hex/Sa/sa`
 normalize_path()| `%2e%2e/hex/Sa/./sa/../%2e/index.html` | `hex/Sa/sa`
+normalize_query()|`a=1&a=2&a=3` | `a=3`
 normalize_query()|`x=y%20&z=k` | `x=y+&z=k`
 normalize_query()|`x=z&x=y &z=k` | `x=y+&z=k`
 normalize_query()|`&x&x=&x=xyz&x=y+&z=k` | `x=y+&z=k`
