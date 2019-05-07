@@ -77,17 +77,16 @@ http_tokenizer::http_tokenizer(const std::string &http_url): m_vct(parts::LENGTH
 	// since protocol could be empty and all evaluation from eval
 	// are performed one at time sequentially this is a workaround
 
-	const string *url = &http_url;
 	if (http_url.find("://") == std::string::npos) {
 		eval.pop_front();
 		j = parts::HOSTNAME;
 	}
 
-	for (size_t i = 0; i < url->length(); ++i) {
-		while ( !eval.empty() && eval.front()(*url, i, j) )
+	for (size_t i = 0; i < http_url.length(); ++i) {
+		while ( !eval.empty() && eval.front()(http_url, i, j) )
 			eval.pop_front();
 
-		m_vct.at(j).put(url->at(i));
+		 m_vct.at(j).put(http_url.at(i));
 	}
 
 }
