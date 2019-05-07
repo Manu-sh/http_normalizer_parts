@@ -1,7 +1,7 @@
 # http_normalizer_parts :spider:
 ###### http url normalization utilities for web crawlers 
 
-This library is intended to be used from web crawlers ad produce normalized http url and not uri, for example http url dosn't have an userinfo part ([rfc7230](https://tools.ietf.org/html/rfc7230)), a C++17 compiler is required.
+This library is intended to be used from web crawlers ad produce normalized http url and not uri, for example http url dosn't have an userinfo part ([rfc7230](https://tools.ietf.org/html/rfc7230)), a C++17 compiler is required. See [examples](examples) for a complete implementation that uses the following functions from `http_parts` (_a complete implementation was not initially planned so maybe there will be more changes_).
 
 ###### structure of http urls
 
