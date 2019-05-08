@@ -7,7 +7,7 @@
 
 class http_tokenizer {
 
-	friend class http_url;
+	friend class http_normalizer;
 	enum parts: uint8_t { PROTO, HOSTNAME, PORT, PATH, QUERY, FRAGMENT, LENGTH };
 
 	explicit http_tokenizer(const std::string &http_url);
