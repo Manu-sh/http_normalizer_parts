@@ -1,52 +1,13 @@
+#include <http_normalizer/public/http_normalizer.hpp>
+#include <http_normalizer/private/http_tokenizer.hpp>
 #include <http_parts/public/http_parts.hpp>
-#include "http_tokenizer.hpp"
 
 #include <sstream>
 #include <iostream>
-#include <string>
 #include <string_view>
 #include <stdexcept>
 #include <iterator>
-#include <memory>
 
-class http_normalizer { /* http url parser/normalizer */
-
-	protected:
-		explicit http_normalizer(const std::string &u);
-		http_normalizer(const http_normalizer &) = delete;
-		http_normalizer & operator=(const http_normalizer &) = delete;
-
-	public:
-		http_normalizer() = default;
-
-		/* mutators */
-		http_normalizer & try_parse(const std::string &u);
-		std::shared_ptr<const std::string> normalize(const std::string &u) noexcept;
-
-		/* accessors */
-		bool is_https() const { return m_is_https; }
-		std::shared_ptr<const std::string> proto()    const { return m_proto;    }
-		std::shared_ptr<const std::string> hostname() const { return m_hostname; }
-		std::shared_ptr<const std::string> port()     const { return m_port;     }
-		std::shared_ptr<const std::string> path()     const { return m_path;     }
-		std::shared_ptr<const std::string> query()    const { return m_query;    }
-		std::shared_ptr<const std::string> fragment() const { return m_fragment; }
-
-		std::shared_ptr<const std::string> normalized() const;
-		std::string dbg_info() const;
-
-	private:
-		mutable std::shared_ptr<std::string> m_normalized;
-		std::shared_ptr<std::string> m_url;
-
-		std::shared_ptr<std::string> m_proto;
-		std::shared_ptr<std::string> m_hostname;
-		std::shared_ptr<std::string> m_port;
-		std::shared_ptr<std::string> m_path;
-		std::shared_ptr<std::string> m_query;
-		std::shared_ptr<std::string> m_fragment;
-		bool m_is_https = false;
-};
 
 http_normalizer::http_normalizer(const std::string &u): m_url{std::make_shared<std::string>(u)} {
 
@@ -155,24 +116,4 @@ std::string http_normalizer::dbg_info() const {
 				<< pair.first << *(*this.*cb)() << '\n';
 
 	return (os << "normalized -> " << *this->normalized() << '\n'), os.str();
-}
-
-using namespace std;
-int main(int argc, const char *argv[]) {
-
-	const char *defaults[] = {argv[0], "http://hello.com:80/sad?x=2#sa"};
-	argv = argc > 1 ? argv : (argc = std::size(defaults), defaults);
-
-	if (argv[1] == defaults[1]) { // same address
-		cout << "usage: " << argv[0] << " [example.com]\nstarting using the default argument \""
-		<< argv[1] << "\"\n" << endl;
-	}
-
-	auto ht = http_normalizer();
-
-	for (int i = 1; i < argc; i++) {
-		try { cout << "[" << argv[i] << "]\n" << ht.try_parse(argv[i]).dbg_info() << '\n';} 
-		catch (const std::exception &ex) { cerr << argv[i] << ": " << ex.what() << endl;}
-	}
-
 }
