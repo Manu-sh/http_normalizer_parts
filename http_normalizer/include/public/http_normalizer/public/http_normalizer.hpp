@@ -6,16 +6,12 @@
 class http_normalizer { /* http url parser/normalizer */
 
 	protected:
-		explicit http_normalizer(const std::string &u);
 		http_normalizer(const http_normalizer &) = delete;
 		http_normalizer & operator=(const http_normalizer &) = delete;
 
 	public:
-		http_normalizer() = default;
-
-		/* mutators */
-		http_normalizer & try_parse(const std::string &u);
-		std::shared_ptr<const std::string> normalize(const std::string &u) noexcept;
+		explicit http_normalizer(const std::string &u);
+		static std::shared_ptr<const std::string> normalize(const std::string &u) noexcept;
 
 		/* accessors */
 		bool is_https() const { return m_is_https; }

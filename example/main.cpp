@@ -15,10 +15,9 @@ int main(int argc, const char *argv[]) {
 		<< argv[1] << "\"\n" << endl;
 	}
 
-	auto ht = http_normalizer();
 
 	for (int i = 1; i < argc; i++) {
-		try { cout << "[" << argv[i] << "]\n" << ht.try_parse(argv[i]).dbg_info() << '\n';} 
+		try { cout << "[" << argv[i] << "]\n" << http_normalizer(argv[i]).dbg_info() << '\n';} 
 		catch (const std::exception &ex) { cerr << argv[i] << ": " << ex.what() << endl;}
 	}
 

@@ -21,7 +21,7 @@ http_normalizer::http_normalizer(const std::string &u): m_url{std::make_shared<s
 		throw invalid_argument("too long");
 
 
-	const auto &parts = http_tokenizer(*m_url).m_vct;
+	const auto &parts = http_tokenizer(*m_url).m_vct; // TODO dangerous temporaney?
 	std::string tmp = parts[http_tokenizer::parts::PROTO].str();
 
 	if (tmp.empty()) {
@@ -86,13 +86,9 @@ std::shared_ptr<const std::string> http_normalizer::normalized() const {
 	return (m_normalized = sh_str( ret.str() ));
 }
 
-http_normalizer & http_normalizer::try_parse(const std::string &u) {
-	this->~http_normalizer(); /* reuse this memory */
-	return new (this) http_normalizer(u), *this;
-}
-
 std::shared_ptr<const std::string> http_normalizer::normalize(const std::string &u) noexcept try {
-	return this->try_parse(u).normalized();
+	http_normalizer ht{u};
+	return ht.normalized();
 } catch (...) {
 	return nullptr;
 }
