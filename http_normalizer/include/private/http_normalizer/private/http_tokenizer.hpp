@@ -45,9 +45,13 @@ http_tokenizer::http_tokenizer(const std::string &http_url): m_vct(parts::LENGTH
 		}, [] (const string &s, size_t &i, uint_fast8_t &j) { // match port end
 
 			switch (s[i]) {
-				case '/': j = parts::PATH;     return (i += i+1 < s.length()), true;
-				case '?': j = parts::QUERY;    return (i += i+1 < s.length()), true;
-				case '#': j = parts::FRAGMENT; return (i += i+1 < s.length()), true;
+				// case '/': j = parts::PATH;     return (i += i+1 < s.length()), true;
+				// case '?': j = parts::QUERY;    return (i += i+1 < s.length()), true;
+				// case '#': j = parts::FRAGMENT; return (i += i+1 < s.length()), true;
+
+				case '/': j = parts::PATH; return true;
+				case '?': j = parts::QUERY; return true;
+				case '#': j = parts::FRAGMENT; return true;
 			}
 
 			return false;
