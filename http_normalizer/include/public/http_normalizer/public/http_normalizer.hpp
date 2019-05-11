@@ -7,7 +7,7 @@ class http_normalizer { /* http url parser/normalizer */
 
 	protected:
 		http_normalizer(const http_normalizer &) = delete;
-		http_normalizer & operator=(const http_normalizer &) = delete;
+		http_normalizer operator=(const http_normalizer &) = delete;
 
 	public:
 		explicit http_normalizer(const std::string &u);
