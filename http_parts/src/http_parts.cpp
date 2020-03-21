@@ -46,7 +46,7 @@ std::string http_parts::normalize_protocol(const std::string &proto) noexcept {
 }
 
 // return "" on error
-std::string http_parts::normalize_hostname(const std::string &hostname) noexcept {
+std::string http_parts::normalize_hostname(const std::string &hostname, int flags) noexcept {
 
 	static const auto MAX_LABELS   = 20;
 	static const auto HOSTNAME_MAX = 63;
@@ -67,9 +67,12 @@ std::string http_parts::normalize_hostname(const std::string &hostname) noexcept
 		}
 	}
 
-	// remove all consecutive www. from start
-	for (size_t i = 0; i < labels.size() && labels[i] == "www"; i++)
-		labels[i] = "";
+	if (flags & OPT::HOSTNAME_STRIP_ALL_PREFIX_WWW) {
+
+		// remove all consecutive www. from start
+		for (size_t i = 0; i < labels.size() && labels[i] == "www"; i++)
+			labels[i] = "";
+	}
 
 	const auto &ret = join(labels, ".");
 
