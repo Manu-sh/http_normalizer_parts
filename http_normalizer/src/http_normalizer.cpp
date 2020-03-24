@@ -9,7 +9,7 @@
 #include <iterator>
 
 
-http_normalizer::http_normalizer(const std::string &u): m_url{std::make_shared<std::string>(u)} {
+http_normalizer::http_normalizer(const std::string &u, int flags): m_url{std::make_shared<std::string>(u)}, m_flags{flags} {
 
 	using std::string, std::invalid_argument, std::to_string;
 	using std::cout, std::endl;
@@ -37,7 +37,7 @@ http_normalizer::http_normalizer(const std::string &u): m_url{std::make_shared<s
 		m_is_https = *m_proto == "https";
 	}
 
-	if (!(m_hostname = sh_str(http_parts::normalize_hostname(parts[http_tokenizer::parts::HOSTNAME].str()))))
+	if (!(m_hostname = sh_str(http_parts::normalize_hostname(parts[http_tokenizer::parts::HOSTNAME].str(), m_flags))))
 		throw invalid_argument("invalid or missing hostname");
 
 	if (!(tmp = parts[http_tokenizer::parts::PORT].str()).empty()) {
@@ -47,7 +47,7 @@ http_normalizer::http_normalizer(const std::string &u): m_url{std::make_shared<s
 	}
 
 	if (!(tmp = parts[http_tokenizer::parts::PATH].str()).empty())
-		m_path  = sh_str( http_parts::normalize_path(tmp) );
+		m_path  = sh_str( http_parts::normalize_path(tmp, m_flags) );
 
 	if (!(tmp = parts[http_tokenizer::parts::QUERY].str()).empty())
 		m_query = sh_str( http_parts::normalize_query(tmp) );
@@ -86,8 +86,8 @@ std::shared_ptr<const std::string> http_normalizer::normalized() const {
 	return (m_normalized = sh_str( ret.str() ));
 }
 
-std::shared_ptr<const std::string> http_normalizer::normalize(const std::string &u) noexcept try {
-	http_normalizer ht{u};
+std::shared_ptr<const std::string> http_normalizer::normalize(const std::string &u, int flags) noexcept try {
+	http_normalizer ht{u, flags};
 	return ht.normalized();
 } catch (...) {
 	return nullptr;

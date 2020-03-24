@@ -10,14 +10,21 @@ class http_normalizer { /* http url parser/normalizer */
 		http_normalizer & operator=(const http_normalizer &) = delete;
 
 	public:
-		explicit http_normalizer(const std::string &u);
+
+		// see also http_parts::OPT
+		enum OPT: unsigned char {
+			HOSTNAME_STRIP_ALL_PREFIX_WWW = 1, // normalize_hostname_opt
+			PATH_REMOVE_DIRECTORY_INDEX   = 1 << 1
+		};
+
+		explicit http_normalizer(const std::string &u, int flags = 0);
 
 		/*
 			return the normalized url on success otherwise null
 			example: http_normalizer::normalize("http://hello.com:80/sad?x=2#sa");
 			however #fragments are silently stripped away!
 		*/
-		static std::shared_ptr<const std::string> normalize(const std::string &u) noexcept;
+		static std::shared_ptr<const std::string> normalize(const std::string &u, int flags = 0) noexcept;
 
 		/* accessors */
 		bool is_https() const { return m_is_https; }
@@ -42,4 +49,5 @@ class http_normalizer { /* http url parser/normalizer */
 		std::shared_ptr<std::string> m_query;
 		std::shared_ptr<std::string> m_fragment;
 		bool m_is_https = false;
+		int m_flags = 0; // http_parts normalization opt
 };

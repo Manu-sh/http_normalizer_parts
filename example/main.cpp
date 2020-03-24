@@ -15,9 +15,10 @@ int main(int argc, const char *argv[]) {
 		<< argv[1] << "\"\n" << endl;
 	}
 
+	int flags = http_normalizer::OPT::HOSTNAME_STRIP_ALL_PREFIX_WWW | http_normalizer::OPT::PATH_REMOVE_DIRECTORY_INDEX;
 
 	for (int i = 1; i < argc; i++) {
-		try { cout << "[" << argv[i] << "]\n" << http_normalizer(argv[i]).dbg_info() << '\n';} 
+		try { cout << "[" << argv[i] << "]\n" << http_normalizer(argv[i], flags).dbg_info() << '\n';} 
 		catch (const std::exception &ex) { cerr << argv[i] << ": " << ex.what() << endl;}
 	}
 
