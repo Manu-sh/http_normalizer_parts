@@ -11,6 +11,12 @@ class http_normalizer { /* http url parser/normalizer */
 
 	public:
 		explicit http_normalizer(const std::string &u);
+
+		/*
+			return the normalized url on success otherwise null
+			example: http_normalizer::normalize("http://hello.com:80/sad?x=2#sa");
+			however #fragments are silently stripped away!
+		*/
 		static std::shared_ptr<const std::string> normalize(const std::string &u) noexcept;
 
 		/* accessors */
