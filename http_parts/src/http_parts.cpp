@@ -25,6 +25,7 @@ using namespace http_parts::utils;
 static inline bool check_label(const std::string &label) noexcept {
 
 	/* each label must be end and start with alnum, '-' is allowed in the middle */
+	// https://tools.ietf.org/html/rfc3986#page-21
 	if (!isalnum(label[0]) || !isalnum(label.back()))
 		return false;
 
@@ -48,6 +49,7 @@ std::string http_parts::normalize_protocol(const std::string &proto) noexcept {
 // return "" on error
 std::string http_parts::normalize_hostname(const std::string &hostname, int flags) noexcept {
 
+	// https://tools.ietf.org/html/rfc1123#page-13
 	static const auto MAX_LABELS   = 20;
 	static const auto HOSTNAME_MAX = 63;
 
@@ -68,7 +70,6 @@ std::string http_parts::normalize_hostname(const std::string &hostname, int flag
 	}
 
 	if (flags & OPT::HOSTNAME_STRIP_ALL_PREFIX_WWW) {
-
 		// remove all consecutive www. from start
 		for (size_t i = 0; i < labels.size() && labels[i] == "www"; i++)
 			labels[i] = "";
@@ -81,7 +82,7 @@ std::string http_parts::normalize_hostname(const std::string &hostname, int flag
 }
 
 // the port || 0 on default port || -1 on error (pct-encoded port are not allowed)
-int http_parts::normalize_port(const std::string &port, bool tls) noexcept {
+int http_parts::normalize_port(const std::string &port, bool is_tls) noexcept {
 
 	if (!std::all_of(port.cbegin(), port.cend(), isdigit))
 		return -1;
@@ -89,34 +90,41 @@ int http_parts::normalize_port(const std::string &port, bool tls) noexcept {
 	try {
 		// remove default ports
 		if (const unsigned long x = stoul(port); x <= std::numeric_limits<unsigned short>::max())
-			return (x == 80 && !tls) || (x == 443 && tls) ? 0 : ((unsigned short)x) > 0 ? ((unsigned short)x) : -1;
+			return (x == 80 && !is_tls) || (x == 443 && is_tls) ? 0 : ((unsigned short)x) > 0 ? ((unsigned short)x) : -1;
 	} catch (...) { }
 
 	return -1;
 }
 
 // no errors are possible
-std::string http_parts::normalize_path(const std::string &path) noexcept {
+std::string http_parts::normalize_path(const std::string &path, int flags) noexcept {
+
+	// Removing duplicate slashes: (change semantics)
 
 	auto segments = split(path, "/");
 	if (segments.empty()) return "";
 
 	for (auto &seg : segments) {
 
+		// decode unreserved characters & encode reserved characters
 		seg = pec_normalize(seg, [] (char ch) {
-                        static const char unreserved[] = "-._~" "!$&'()*+,";
+			static const char unreserved[] = "-._~" "!$&'()*+,";
 			static const unsigned char unreserved_len = std::size(unreserved) - 1; /* without '\0' */
 			return !isalnum(ch) && !memchr(unreserved, ch, unreserved_len);
 		});
 
+		// remove dot segments: https://tools.ietf.org/html/rfc3986#page-33
 		if (seg == "." || seg == "..")
 			seg = "";
 	}
 
-	for (const char *s : {"index.html", "index.php", "default.asp", "index.shtml", "index.jsp"}) {
-		if (segments.back() == s) {
-			segments.pop_back();
-			break;
+	// removing directory index (semantic change)
+	if (flags & OPT::PATH_REMOVE_DIRECTORY_INDEX) {
+		for (const char *s : {"index.html", "index.php", "default.asp", "index.shtml", "index.jsp"}) {
+			if (segments.back() == s) {
+				segments.pop_back();
+				break;
+			}
 		}
 	}
 
@@ -126,14 +134,17 @@ std::string http_parts::normalize_path(const std::string &path) noexcept {
 // no errors are possible
 std::string http_parts::normalize_query(const std::string &query) noexcept {
 
+	// decode unreserved characters & encode reserved characters
 	static const auto &is_reserved = [] (char ch) {
-                static const char unreserved[] = "!$'/()*,;:@-._~";
+        static const char unreserved[] = "!$'/()*,;:@-._~";
 		static const unsigned char unreserved_len = std::size(unreserved) - 1; /* without '\0' */
 		return !isalnum(ch) && !memchr(unreserved, ch, unreserved_len);
 	};
 
-	auto cpy = find_and_replace(query, "+", "%20");
+	auto cpy = find_and_replace(query, "+", "%20"); // first convert all spaces into a %20
 	auto vkvs = split(cpy, "&");
+
+	// sorting the query parameters (change semantic)
 	std::map<std::string, std::string> sorted;
 
 	if (vkvs.empty()) {
@@ -145,13 +156,17 @@ std::string http_parts::normalize_query(const std::string &query) noexcept {
 
 	for (const auto &kvs : vkvs) {
 		auto kv = split(kvs, "=");
-		if (kv.size() < 2) { if (kv.size() == 1) kv.emplace_back(""); else continue; }
+		// if the pair is incomplete (there the key but not the value)
+		// example: &key_and_value=his_value&only_key=&always_only_key
+		if (kv.size() < 2) { if (kv.size() == 1) kv.emplace_back(""); else continue; } 
+
+		// pct_normalize every key and value an insert them into the sorted map
 		sorted.insert_or_assign(pec_normalize(kv[0], is_reserved), pec_normalize(kv[1], is_reserved));
 	}
 
 	vkvs.clear();
 	for (const auto &pair : sorted)
-		vkvs.push_back(pair.second.empty() ? pair.first : pair.first + '=' + pair.second);
+		vkvs.push_back(pair.second.empty() ? pair.first : pair.first + '=' + pair.second); // if k has a value
 
-	return vkvs.empty() ? "" : find_and_replace( (cpy = join(vkvs, "&")), "%20", "+");
+	return vkvs.empty() ? "" : find_and_replace( (cpy = join(vkvs, "&")), "%20", "+"); // convert all previously %20 encoded spaces into a + encoded spaces
 }

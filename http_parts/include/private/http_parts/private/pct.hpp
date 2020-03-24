@@ -157,6 +157,7 @@ namespace http_parts::pct {
 
 	// ch_transform perform a transformation on each character into his non percent encoded form ex. if ch_tranform is tolower 
 	// %6f -> (O -> ch_transform(O) -> o) -> %3F
+	// input -> pcdecode -> ch_transfrom -> if is_reserved -> encode
 
 	static std::string pec_normalize(const std::string_view &in, 
 				const std::function<bool(char)> &is_reserved,
