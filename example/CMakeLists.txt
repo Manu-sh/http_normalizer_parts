@@ -4,6 +4,9 @@ cmake_minimum_required(VERSION 3.5)
 set(CMAKE_CXX_STANDARD 17)
 set(EXECUTABLE_OUTPUT_PATH, ${PROJECT_SOURCE_DIR}/bin)
 
+# equivalent of: strip --strip-all
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -s")
+
 # enable/disable tests
 # include(CTest)
 
@@ -17,3 +20,6 @@ target_compile_options(${PROJECT_NAME}
 		-fstack-protector-all -fstack-protector-strong
 		-O3 -ffast-math -funroll-loops -march=native
 )
+
+
+
