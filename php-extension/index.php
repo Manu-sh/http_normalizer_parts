@@ -12,7 +12,7 @@
 			<button>submit</button>
 		</form>
 
-		<?php foreach(range(1, 10000) as $_): ?>
+		<?php foreach(range(1, 1) as $_): ?>
 			<?php if (($tmp = normalize_http_url($_POST['in'] ?? '')) !== ''): ?>
 				<input type="text" value="<?= $tmp ?> " readonly>
 			<?php endif; ?>
