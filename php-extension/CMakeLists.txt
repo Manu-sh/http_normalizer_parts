@@ -1,4 +1,4 @@
-project(php_http_normalize)
+project(php_http_normalize_parts)
 cmake_minimum_required(VERSION 3.5)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -15,8 +15,10 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 add_library(${PROJECT_NAME} SHARED ${PROJECT_NAME}.cpp)
 # endshlib
 
-add_subdirectory(../http_normalizer 3party)
-target_link_libraries(${PROJECT_NAME} PRIVATE httpnormalizer)
+# add & link http_parts
+add_subdirectory(../http_parts 3party)
+target_link_libraries(${PROJECT_NAME} PRIVATE httparts)
+
 target_link_libraries(${PROJECT_NAME} PRIVATE phpcpp)
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR})
