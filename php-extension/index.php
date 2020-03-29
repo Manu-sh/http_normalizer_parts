@@ -1,4 +1,12 @@
 <?php declare(strict_types=1); ini_set('display_errors', '1'); ini_set('display_startup_errors', '1'); error_reporting(E_ALL); assert_options(ASSERT_ACTIVE, 1); assert_options(ASSERT_WARNING, 1); ?>
+<?php
+
+	echo http_normalize_proto('hTtp');
+	echo http_normalize_hostname('www.go%6fgle.c%6Fm');
+	echo http_normalize_port(80, false);
+	echo http_normalize_query('a=c&b=d');
+
+?>
 <html>
 
 	<head>
