@@ -1,7 +1,4 @@
-# this is a build using cmake
-
 .PHONY: all clean
-
 
 NAME                            = libphp_http_normalize_parts
 
@@ -12,15 +9,6 @@ NAME                            = libphp_http_normalize_parts
 #       one for each extension. Use this variable to specify this directory.
 
 INI_DIR                         = /etc/php/conf.d
-
-
-#       The extension dirs
-#
-#       This is normally a directory like /usr/lib/php5/20121221 (based on the
-#       PHP version that you use. We make use of the command line 'php-config'
-#       instruction to find out what the extension directory is, you can override
-#       this with a different fixed directory
-
 EXTENSION_DIR                   = $(shell php-config --extension-dir)
 
 
@@ -30,7 +18,6 @@ EXTENSION_DIR                   = $(shell php-config --extension-dir)
 
 EXTENSION                       = build/${NAME}.so
 INI                             = ${NAME}.ini
-CP                              = cp -f
 
 all:
 	mkdir -p build                                          && \
@@ -38,8 +25,9 @@ all:
 	cmake -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release .. && \
 	make -j`nproc --all`
 
-	sudo ${CP} ${EXTENSION} ${EXTENSION_DIR}
-	sudo ${CP} ${INI} ${INI_DIR}
+install:
+	sudo cp -f ${EXTENSION} ${EXTENSION_DIR}
+	sudo cp -f ${INI} ${INI_DIR}
 
 clean:
 	rm -rf build

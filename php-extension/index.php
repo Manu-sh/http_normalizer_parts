@@ -7,28 +7,4 @@
 		http_normalize_port(80, false);
 		http_normalize_query('a=c&b=d');
 	}
-
-	exit
 ?>
-<html>
-
-	<head>
-		<title></title>
-		<style>input { min-width:30em; }</style>
-	</head>
-
-	<body>
-		<form method="POST">
-			<input type="text" name="in" value="<?= $_POST['in'] ?? '' ?>">
-			<button>submit</button>
-		</form>
-
-		<?php foreach(range(1, 1) as $_): ?>
-			<?php if (($tmp = normalize_http_url($_POST['in'] ?? '')) !== ''): ?>
-				<input type="text" value="<?= $tmp ?> " readonly>
-			<?php endif; ?>
-		<?php endforeach; ?>
-
-	</body>
-
-</html>
