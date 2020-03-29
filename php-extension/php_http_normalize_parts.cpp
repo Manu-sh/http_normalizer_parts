@@ -4,7 +4,8 @@
 #include <phpcpp.h>
 #include <string>
 
-constexpr static int HTTP_NORMALIZER_FLAGS = http_parts::OPT::HOSTNAME_STRIP_ALL_PREFIX_WWW | http_parts::OPT::PATH_REMOVE_DIRECTORY_INDEX;
+// constexpr static int HTTP_NORMALIZER_FLAGS = http_parts::OPT::HOSTNAME_STRIP_ALL_PREFIX_WWW | http_parts::OPT::PATH_REMOVE_DIRECTORY_INDEX;
+constexpr static int HTTP_NORMALIZER_FLAGS = 0;
 
 Php::Value http_normalize_proto(Php::Parameters &params) {
     Php::Value string_val = params[0];
