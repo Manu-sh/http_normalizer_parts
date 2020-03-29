@@ -1,35 +1,32 @@
-
 #include <http_parts/public/http_parts.hpp>
-
 #include <phpcpp.h>
-#include <string>
 
 // constexpr static int HTTP_NORMALIZER_FLAGS = http_parts::OPT::HOSTNAME_STRIP_ALL_PREFIX_WWW | http_parts::OPT::PATH_REMOVE_DIRECTORY_INDEX;
 constexpr static int HTTP_NORMALIZER_FLAGS = 0;
 
 Php::Value http_normalize_proto(Php::Parameters &params) {
-    Php::Value string_val = params[0];
+	Php::Value string_val = params[0];
 	return http_parts::normalize_protocol(string_val);
 }
 
 Php::Value http_normalize_hostname(Php::Parameters &params) {
-    Php::Value string_val = params[0];
+	Php::Value string_val = params[0];
 	return http_parts::normalize_hostname(string_val, ::HTTP_NORMALIZER_FLAGS);
 }
 
 Php::Value http_normalize_port(Php::Parameters &params) {
-    Php::Value string_val = params[0];
-    Php::Value   bool_val = params[1];
+	Php::Value string_val = params[0];
+	Php::Value   bool_val = params[1];
 	return http_parts::normalize_port(string_val, bool_val);
 }
 
 Php::Value http_normalize_path(Php::Parameters &params) {
-    Php::Value string_val = params[0];
+	Php::Value string_val = params[0];
 	return http_parts::normalize_path(string_val);
 }
 
 Php::Value http_normalize_query(Php::Parameters &params) {
-    Php::Value string_val = params[0];
+	Php::Value string_val = params[0];
 	return http_parts::normalize_query(string_val);
 }
 
