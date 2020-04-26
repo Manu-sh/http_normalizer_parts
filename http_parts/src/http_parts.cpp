@@ -41,7 +41,7 @@ std::string http_parts::normalize_protocol(const std::string &proto) noexcept {
 
 	auto cpy = pec_normalize(proto, [] (char ch) {
 		return !isalnum(ch) && !memchr("+-.", ch, 3);
-	}, tolower);
+	}, [] (unsigned char c) { return tolower(c); });
 
 	return cpy == "http" || cpy == "https" ? cpy : "";
 }
