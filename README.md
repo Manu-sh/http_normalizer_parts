@@ -13,7 +13,7 @@ No regex are used here, these function are intended to be used from a web  crawl
 <br>
 
 the following symbol ":warning:" is a short for: "otherwise is treated as an error and an empty string will be returned"
-and basically mean that the function can't perform a valid normalization
+and basically mean that the function can't perform a valid normalization (usually because the underlying data is not valid).
 
 ###### normalize_protocol()
 * Decoding percent-encoded octets of unreserved characters
