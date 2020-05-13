@@ -12,6 +12,9 @@ http-URI = "http:" "//" authority path-abempty [ "?" query ] [ "#" fragment ]
 No regex are used here, these function are intended to be used from a web  crawler, so they want reduce the size of resulting string and be conservative as possible, if you use an existent parser to extract the arguments for these function be careful because parsers could be more restrictive than may you want be. The advantage of having single functions that perform the normalization of the individual parts is the possibility of defining further parsing rules, for example if you want to decode the percent-encoded ports you can try to decoding the sequence of characters involved before calling normalize_port() and therefore increase the general error tolerance.
 <br>
 
+the following symbol ":warning:" is a short for: "otherwise is treated as an error and an empty string will be returned"
+and basically mean that the function can't perform a valid normalization
+
 ###### normalize_protocol()
 * Decoding percent-encoded octets of unreserved characters
 * Converting the scheme to lower case
@@ -21,18 +24,18 @@ return an empty string in case of error
 
 ###### normalize_hostname()
 * Decoding percent-encoded octets of unreserved characters
-* Empty labels are not allowed
-* Max 64 chars are allowed
-* Require at least 2 labels (so hosts like `localhost` are rejected)
-* Maximum 20 labels
-* Each labels must start and end with `[[:alnum:]]`, `'-'` is allowed in the middle
+* Empty labels are not allowed :warning:
+* Max 64 chars are allowed :warning:
+* Require at least 2 labels (so hosts like `localhost` are rejected) :warning:
+* Maximum 20 labels :warning:
+* Each labels must start and end with `[[:alnum:]]`, `'-'` is allowed in the middle :warning:
 * Converting the host to lower case
 * Remove all `www.` labels from the beginning of string (these are counted as part of  max_labels) so `www.www.google.com` become `google.com`
 
 return an empty string in case of error
 
 ###### normalize_port()
-* Check if the port is between (`1` and `USHRT_MAX`)
+* Check if the port is between (`1` and `USHRT_MAX`) :warning:
 * If is a valid port and the port can be removed (is the *default port* of protocol, for example 443 for https) return `0`, in case of error return `-1`
 or the port itself if is valid and isn't the default port
 
