@@ -9,6 +9,8 @@ namespace http_parts {
 	};
 
 	std::string normalize_protocol(const std::string &proto) noexcept; // "" on error
+
+	// fail if: labels < 2 || labels > 20 || label.contains(invalid_characters) || hostname.length > MAX_HOSTNAME
 	std::string normalize_hostname(const std::string &hostname, int flags = OPT::HOSTNAME_STRIP_ALL_PREFIX_WWW) noexcept;   // "" on error
 	int normalize_port(const std::string &port, bool is_tls) noexcept; // the port || 0 on default port || -1 on error
 
