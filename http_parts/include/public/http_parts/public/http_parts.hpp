@@ -5,7 +5,8 @@ namespace http_parts {
 
 	enum OPT: unsigned char {
 		HOSTNAME_STRIP_ALL_PREFIX_WWW = 1, // normalize_hostname_opt
-		PATH_REMOVE_DIRECTORY_INDEX   = 1 << 1
+		PATH_REMOVE_DIRECTORY_INDEX   = 1 << 1,
+        PATH_KEEP_TRAILING_SLASH      = 1 << 2,
 	};
 
 	std::string normalize_protocol(const std::string &proto) noexcept; // "" on error

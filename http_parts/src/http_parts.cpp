@@ -102,7 +102,7 @@ std::string http_parts::normalize_path(const std::string &path, int flags) noexc
 	// Removing duplicate slashes: (change semantics)
 
 	auto segments = split(path, "/");
-	if (segments.empty()) return "";
+    if (segments.empty()) return (flags & PATH_KEEP_TRAILING_SLASH) ? path : "";
 
 	for (auto &seg : segments) {
 
@@ -128,7 +128,11 @@ std::string http_parts::normalize_path(const std::string &path, int flags) noexc
 		}
 	}
 
-	return join(segments, "/");
+    auto retval = join(segments, "/");
+    if (!(flags & PATH_KEEP_TRAILING_SLASH) || path.back() != '/')
+        return retval;
+
+    return retval.push_back('/'), retval;
 }
 
 // no errors are possible
