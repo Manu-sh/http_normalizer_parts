@@ -1,5 +1,6 @@
-.vscode
+.vscode/
 main
 *.a
 *.o
 build/
+.idea/
